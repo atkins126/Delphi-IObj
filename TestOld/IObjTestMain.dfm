@@ -2,8 +2,8 @@ object frmIObjTestMain: TfrmIObjTestMain
   Left = 0
   Top = 0
   Caption = 'IObj Test Main'
-  ClientHeight = 585
-  ClientWidth = 785
+  ClientHeight = 582
+  ClientWidth = 773
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,12 +18,12 @@ object frmIObjTestMain: TfrmIObjTestMain
     Left = 0
     Top = 0
     Width = 220
-    Height = 585
+    Height = 582
     Align = alLeft
     FlowStyle = fsTopBottomLeftRight
     ShowCaption = False
     TabOrder = 0
-    ExplicitLeft = 1
+    ExplicitHeight = 583
     object btnHome: TButton
       AlignWithMargins = True
       Left = 11
@@ -154,25 +154,175 @@ object frmIObjTestMain: TfrmIObjTestMain
       OnClick = cbLineNumbersClick
     end
   end
-  object PageControl1: TPageControl
+  object CardPanel1: TCardPanel
     Left = 220
     Top = 0
-    Width = 565
-    Height = 585
-    ActivePage = tsCode
+    Width = 553
+    Height = 582
     Align = alClient
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'Segoe UI'
-    Font.Style = []
-    ParentFont = False
+    ActiveCard = CardCode
+    Caption = 'CardPanel1'
     TabOrder = 1
     ExplicitLeft = 185
-    ExplicitWidth = 600
-    object tsHome: TTabSheet
-      Caption = 'Home'
-      TabVisible = False
+    ExplicitWidth = 588
+    object CardCode: TCard
+      Left = 1
+      Top = 1
+      Width = 555
+      Height = 581
+      CardIndex = 0
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+      ExplicitWidth = 586
+      ExplicitHeight = 580
+      object pgCode: TPageControl
+        AlignWithMargins = True
+        Left = 5
+        Top = 5
+        Width = 545
+        Height = 571
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        ActivePage = tbCodeLeaked
+        Align = alClient
+        TabOrder = 0
+        ExplicitWidth = 580
+        object tbCodeLeaked: TTabSheet
+          Caption = 'Leaked'
+          DesignSize = (
+            533
+            534)
+          object memoLeaked: TMemo
+            AlignWithMargins = True
+            Left = 3
+            Top = 3
+            Width = 527
+            Height = 486
+            Margins.Bottom = 45
+            Align = alClient
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            ScrollBars = ssBoth
+            TabOrder = 0
+            ExplicitWidth = 562
+            ExplicitHeight = 492
+          end
+          object btnLeaked: TButton
+            Left = 3
+            Top = 506
+            Width = 150
+            Height = 25
+            Anchors = [akLeft, akBottom]
+            Caption = 'Execute'
+            TabOrder = 1
+            ExplicitTop = 512
+          end
+        end
+        object tbCodeStandard: TTabSheet
+          Caption = 'Standard Fix'
+          ImageIndex = 1
+          DesignSize = (
+            533
+            534)
+          object memoStandardFix: TMemo
+            AlignWithMargins = True
+            Left = 3
+            Top = 3
+            Width = 527
+            Height = 486
+            Margins.Bottom = 45
+            Align = alClient
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            ScrollBars = ssBoth
+            TabOrder = 0
+            ExplicitWidth = 566
+            ExplicitHeight = 487
+          end
+          object btnStandardFix: TButton
+            Left = 3
+            Top = 501
+            Width = 150
+            Height = 25
+            Anchors = [akLeft, akBottom]
+            Caption = 'Execute'
+            TabOrder = 1
+            ExplicitTop = 502
+          end
+        end
+        object tbCodeIObj: TTabSheet
+          Caption = 'IObj Fix'
+          ImageIndex = 2
+          DesignSize = (
+            533
+            534)
+          object btnIObjFix: TButton
+            Left = 3
+            Top = 501
+            Width = 150
+            Height = 25
+            Anchors = [akLeft, akBottom]
+            Caption = 'Execute'
+            TabOrder = 0
+            ExplicitTop = 502
+          end
+          object memoIObjFix: TMemo
+            AlignWithMargins = True
+            Left = 3
+            Top = 3
+            Width = 527
+            Height = 486
+            Margins.Bottom = 45
+            Align = alClient
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            ScrollBars = ssBoth
+            TabOrder = 1
+            ExplicitWidth = 566
+            ExplicitHeight = 487
+          end
+        end
+      end
+    end
+    object CardIObj: TCard
+      Left = 1
+      Top = 1
+      Width = 551
+      Height = 580
+      Caption = 'CardIObj'
+      CardIndex = 1
+      TabOrder = 1
+      ExplicitWidth = 590
+      ExplicitHeight = 581
+      object memoIObj: TMemo
+        Left = 0
+        Top = 0
+        Width = 555
+        Height = 581
+        Margins.Bottom = 45
+        Align = alClient
+        ScrollBars = ssBoth
+        TabOrder = 0
+        ExplicitWidth = 590
+      end
+    end
+    object CardHome: TCard
+      Left = 1
+      Top = 1
+      Width = 551
+      Height = 580
+      Caption = 'CardHome'
+      CardIndex = 2
+      TabOrder = 2
+      ExplicitWidth = 590
+      ExplicitHeight = 581
       object Label1: TLabel
         Left = 48
         Top = 24
@@ -207,137 +357,6 @@ object frmIObjTestMain: TfrmIObjTestMain
         Width = 293
         Height = 21
         Caption = 'No need for try finally block to free myObj'
-      end
-    end
-    object tsIObj: TTabSheet
-      Caption = 'IObj'
-      ImageIndex = 1
-      TabVisible = False
-      object memoIObj: TMemo
-        Left = 0
-        Top = 0
-        Width = 557
-        Height = 575
-        Margins.Bottom = 45
-        Align = alClient
-        ScrollBars = ssBoth
-        TabOrder = 0
-        ExplicitWidth = 592
-      end
-    end
-    object tsCode: TTabSheet
-      Caption = 'tsCode'
-      ImageIndex = 2
-      TabVisible = False
-      object pgCode: TPageControl
-        AlignWithMargins = True
-        Left = 5
-        Top = 5
-        Width = 547
-        Height = 565
-        Margins.Left = 5
-        Margins.Top = 5
-        Margins.Right = 5
-        Margins.Bottom = 5
-        ActivePage = tbCodeLeaked
-        Align = alClient
-        TabOrder = 0
-        ExplicitWidth = 582
-        object tbCodeLeaked: TTabSheet
-          Caption = 'Leaked'
-          DesignSize = (
-            539
-            529)
-          object memoLeaked: TMemo
-            AlignWithMargins = True
-            Left = 3
-            Top = 3
-            Width = 533
-            Height = 481
-            Margins.Bottom = 45
-            Align = alClient
-            BevelInner = bvNone
-            BevelOuter = bvNone
-            ScrollBars = ssBoth
-            TabOrder = 0
-            ExplicitWidth = 564
-            ExplicitHeight = 486
-          end
-          object btnLeaked: TButton
-            Left = 3
-            Top = 494
-            Width = 150
-            Height = 25
-            Anchors = [akLeft, akBottom]
-            Caption = 'Execute'
-            TabOrder = 1
-            ExplicitTop = 499
-          end
-        end
-        object tbCodeStandard: TTabSheet
-          Caption = 'Standard Fix'
-          ImageIndex = 1
-          DesignSize = (
-            539
-            529)
-          object memoStandardFix: TMemo
-            AlignWithMargins = True
-            Left = 3
-            Top = 3
-            Width = 533
-            Height = 481
-            Margins.Bottom = 45
-            Align = alClient
-            BevelInner = bvNone
-            BevelOuter = bvNone
-            ScrollBars = ssBoth
-            TabOrder = 0
-            ExplicitWidth = 568
-            ExplicitHeight = 487
-          end
-          object btnStandardFix: TButton
-            Left = 3
-            Top = 494
-            Width = 150
-            Height = 25
-            Anchors = [akLeft, akBottom]
-            Caption = 'Execute'
-            TabOrder = 1
-            ExplicitTop = 500
-          end
-        end
-        object tbCodeIObj: TTabSheet
-          Caption = 'IObj Fix'
-          ImageIndex = 2
-          DesignSize = (
-            539
-            529)
-          object btnIObjFix: TButton
-            Left = 3
-            Top = 494
-            Width = 150
-            Height = 25
-            Anchors = [akLeft, akBottom]
-            Caption = 'Execute'
-            TabOrder = 0
-            ExplicitTop = 500
-          end
-          object memoIObjFix: TMemo
-            AlignWithMargins = True
-            Left = 3
-            Top = 3
-            Width = 533
-            Height = 481
-            Margins.Bottom = 45
-            Align = alClient
-            BevelInner = bvNone
-            BevelOuter = bvNone
-            ScrollBars = ssBoth
-            TabOrder = 1
-            ExplicitWidth = 568
-            ExplicitHeight = 487
-          end
-        end
       end
     end
   end

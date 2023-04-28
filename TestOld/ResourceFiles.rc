@@ -1,0 +1,12 @@
+IObj RCDATA ..\LN.IObj.pas
+
+LocalVars RCDATA LocalVars.pas
+
+MyClassLeaked RCDATA MyClassLeaked.pas
+MyClassStandard RCDATA MyClassStandard.pas
+MyClassIObj RCDATA MyClassIObj.pas
+
+ObjectAsPropertyLeaked RCDATA ObjectAsPropertyLeaked.pas
+ObjectAsPropertyStandard RCDATA ObjectAsPropertyStandard.pas
+ObjectAsPropertyIObj RCDATA ObjectAsPropertyIObj.pas
+

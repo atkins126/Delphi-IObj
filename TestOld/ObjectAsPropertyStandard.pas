@@ -1,9 +1,8 @@
 unit ObjectAsPropertyStandard;
 
-
 interface
 uses
-  System.Classes, Generics.Collections, System.SysUtils, Dialogs;
+  System.Classes, System.SysUtils, Dialogs;
 
 type
   TPerson = class
@@ -29,7 +28,7 @@ type
     property Owners : TPersonArray read fOwners;
     property Residents : TPersonArray read fResidents;
 
-    function getAllPeople : TList<TPerson>;
+    function getAllPeople : TList;
     class function getNames(lst: TPersonArray): string;
     class function execute : boolean;
 
@@ -52,7 +51,7 @@ end;
 destructor THouse.Destroy;
 var
   person : TPerson;
-  listAll : TList<TPerson>;
+  listAll : TList;
 begin
   if fOwnObjects then
   begin
@@ -69,7 +68,7 @@ end;
 class function THouse.execute: boolean;
 var
   p1, p2, p3, p4, p5 : TPerson;
-  House1, House2 : THouse;
+  house1, house2 : THouse;
 begin
   p1 := TPerson.Create('P1', StrToDate('1/1/2000'));
   p2 := TPerson.Create('P2', StrToDate('2/2/2000'));
@@ -78,8 +77,8 @@ begin
   p5 := TPerson.Create('P5', StrToDate('5/5/2000'));
 
   // p1 owns 2 house1 & house2.
-  House1 := THouse.Create('address1', [p1], [p2, p3], true);
-  House2 := THouse.Create('address2', [p1], [p1, p4, p5], true);
+  house1 := THouse.Create('address1', [p1], [p2, p3], true);
+  house2 := THouse.Create('address2', [p1], [p1, p4, p5], true);
 
   // do some logic
   showMessage('Property: ' + house1.Address + #13#10 +
@@ -89,17 +88,18 @@ begin
   showMessage('Property: ' + house2.Address + #13#10 +
               'Owner: ' + THouse.getNames(house2.Owners) + #13#10 +
               'Residents: ' + THouse.getNames(house2.Residents));
-  House1.Free;
-  House2.Free;
+
+  house1.Free;
+  house2.Free;
   Result := True;
 end;
 
 // returns a list of distinct people from the lists of owners and renters
-function THouse.getAllPeople: TList<TPerson>;
+function THouse.getAllPeople: TList;
 var
   person : TPerson;
 begin
-  result := TList<TPerson>.Create;
+  result := TList.Create;
 
   for person in fOwners do
     if (result.IndexOf(person) < 0) then

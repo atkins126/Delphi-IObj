@@ -1,28 +1,21 @@
-unit MyClassLeaked;
+unit MyClass;
 
 interface
 uses
   System.Classes, System.SysUtils;
 
 type
-  TMyclass = class
+  TMyclassLeaked = class
   private
     flst: TStringList;
   public
     constructor Create;
-    procedure execute;
   end;
 implementation
 
-constructor TMyclass.Create;
+constructor TMyClassLeaked.Create;
 begin
   flst := TStringList.Create;
-end;
-
-procedure TMyclass.execute;
-begin
-  // some logic
-  flst.Add('hello world');
 end;
 
 end.

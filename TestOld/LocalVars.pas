@@ -53,11 +53,11 @@ end;
 //LocalVarsIObj-begin
 class procedure TLocalVars.executeIObj;
 var
-  lst : IObj<TStringList>;
+  lst : TStringList; ilst : IObj;
 begin
-  lst := TObj.CreateInstance(TStringList.Create);
+  lst := TStringList.Create; ilst := TObj.Create(lst);
   // some logic
-  lst.Obj.Add('hello world');
+  lst.Add('hello world');
 end;
 //LocalVarsIObj-end
 
@@ -69,14 +69,14 @@ class procedure TLoopVars.executeIObj;
 const
   n = 10;
 var
-  lst : IObj<TStringList>;
+  lst : TStringList; ilst : IObj;
   i : Integer;
 begin
   for i := 0 to n-1 do
   begin
-    lst := TObj.CreateInstance(TStringList.Create);
+    lst := TStringList.Create; ilst := TObj.Create(lst);
     // some logic
-    lst.Obj.Add('hello world');
+    lst.Add('hello world');
   end;
 end;
 //LoopVarsIObj-end

@@ -1,13 +1,13 @@
-unit MyClassLeaked;
+unit MyClassIObj;
 
 interface
 uses
-  System.Classes, System.SysUtils;
+  LN.IObj, System.Classes, System.SysUtils;
 
 type
   TMyclass = class
   private
-    flst: TStringList;
+    flst: TStringList; filst: IObj;
   public
     constructor Create;
     procedure execute;
@@ -16,7 +16,7 @@ implementation
 
 constructor TMyclass.Create;
 begin
-  flst := TStringList.Create;
+  flst := TStringList.Create; filst := TObj.Create(flst);
 end;
 
 procedure TMyclass.execute;

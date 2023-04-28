@@ -3,36 +3,22 @@ unit IObjTestMain;
 interface
 
 uses
-  LN.IObj, System.Types, 
-  LocalVars,
+  LN.IObj, System.Types,
+  LocalVars, 
   MyClassLeaked, MyClassStandard, MyClassIObj,
   ObjectAsPropertyLeaked, ObjectAsPropertyStandard, ObjectAsPropertyIObj,
 
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, 
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, 
-  Vcl.ComCtrls;
+  Vcl.ComCtrls, Vcl.WinXPanels;
 
 type
   TfrmIObjTestMain = class(TForm)
     FlowPanel1: TFlowPanel;
     btnHome: TButton;
-    btnIObj: TButton;
-    btnLocalVariables: TButton;
-    btnMyClass: TButton;
-    btnLoopVariables: TButton;
-    btnObjectAsProperty: TButton;
-    cbLeaked: TCheckBox;
-    cbStandardFix: TCheckBox;
-    cbIObjFix: TCheckBox;
-    PageControl1: TPageControl;
-    tsHome: TTabSheet;
-    tsIObj: TTabSheet;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    tsCode: TTabSheet;
+    CardPanel1: TCardPanel;
+    CardCode: TCard;
+    CardIObj: TCard;
     memoIObj: TMemo;
     pgCode: TPageControl;
     tbCodeLeaked: TTabSheet;
@@ -44,6 +30,20 @@ type
     tbCodeIObj: TTabSheet;
     btnIObjFix: TButton;
     memoIObjFix: TMemo;
+    CardHome: TCard;
+    btnIObj: TButton;
+    btnLocalVariables: TButton;
+    btnMyClass: TButton;
+    btnLoopVariables: TButton;
+    btnObjectAsProperty: TButton;
+    cbLeaked: TCheckBox;
+    cbStandardFix: TCheckBox;
+    cbIObjFix: TCheckBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
     cbLineNumbers: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure btnHomeClick(Sender: TObject);
@@ -95,7 +95,7 @@ implementation
 
 procedure TfrmIObjTestMain.btnHomeClick(Sender: TObject);
 begin
-  PageControl1.ActivePage := tsHome;
+  CardPanel1.ActiveCard := cardHome;
 end;
 
 // LocalVars
@@ -130,16 +130,16 @@ end;
 procedure TfrmIObjTestMain.btnMyClassClick(Sender: TObject);
 begin
   loadMyClass;
-  PageControl1.ActivePage := tsCode;
+  CardPanel1.ActiveCard := cardCode;
 end;
 
 procedure TfrmIObjTestMain.btnMyClassIObjClick(Sender: TObject);
 var
-  myClass : IObj<MyClassIObj.TMyclass>;
+  myClass : IObj;
 begin
   try
-    myClass := TObj.CreateInstance(MyClassIObj.TMyclass.Create);
-    myClass.Obj.execute;
+    myClass := TObj.Create(MyClassIObj.TMyclass.Create);
+    TMyClass(myClass.Obj).execute;
   finally
     cbIObjFix.checked := true;
   end;
@@ -147,11 +147,11 @@ end;
 
 procedure TfrmIObjTestMain.btnMyClassLeakedClick(Sender: TObject);
 var
-  myClass : IObj<MyClassLeaked.TMyclass>;
+  myClass : IObj;
 begin
   try
-    myClass := TObj.CreateInstance(MyClassLeaked.TMyclass.Create);
-    myClass.Obj.execute;
+    myClass := TObj.Create(MyClassLeaked.TMyclass.Create);
+    TMyClass(myClass.Obj).execute;
   finally
     cbLeaked.checked := true;
   end;
@@ -159,11 +159,11 @@ end;
 
 procedure TfrmIObjTestMain.btnMyClassStandardClick(Sender: TObject);
 var
-  myClass : IObj<MyClassStandard.TMyclass>;
+  myClass : IObj;
 begin
   try
-    myClass := TObj.CreateInstance(MyClassStandard.TMyclass.Create);
-    myClass.Obj.execute;
+    myClass := TObj.Create(MyClassStandard.TMyclass.Create);
+    TMyClass(myClass.Obj).execute;
   finally
     cbStandardFix.checked := true;
   end;
@@ -173,7 +173,7 @@ end;
 procedure TfrmIObjTestMain.btnLoopVariablesClick(Sender: TObject);
 begin
   loadLoopVars;
-  PageControl1.ActivePage := tsCode;
+  CardPanel1.ActiveCard := cardCode;
 end;
 
 
@@ -208,7 +208,7 @@ end;
 procedure TfrmIObjTestMain.btnObjectAsPropertyClick(Sender: TObject);
 begin
   loadObjectAsProperty;
-  PageControl1.ActivePage := tsCode;
+  CardPanel1.ActiveCard := cardCode;
 end;
 
 procedure TfrmIObjTestMain.btnObjectAsPropertyIObjClick(Sender: TObject);
@@ -245,36 +245,34 @@ begin
     ShowLineNumbers([memoIObj.Lines, memoLeaked.Lines, memoStandardFix.Lines, memoIObjFix.Lines])
   else
     RemoveLineNumbers([memoIObj.Lines, memoLeaked.Lines, memoStandardFix.Lines, memoIObjFix.Lines]);
-
 end;
 
 procedure TfrmIObjTestMain.btnIObjClick(Sender: TObject);
 begin
-  PageControl1.ActivePage := tsIObj;
+  CardPanel1.ActiveCard := cardIObj;
 end;
 
 procedure TfrmIObjTestMain.btnLocalVariablesClick(Sender: TObject);
 begin
   loadLocalVars;
-  PageControl1.ActivePage := tsCode;
+  CardPanel1.ActiveCard := cardCode;
 
 end;
 
 procedure TfrmIObjTestMain.FormCreate(Sender: TObject);
 begin
-  PageControl1.ActivePage := tsHome;
+  CardPanel1.ActiveCard := cardHome;
   pgCode.ActivePageIndex := 0;
   loadIObj;
 end;
 
 function TfrmIObjTestMain.getCode(src: TStrings; const tag: string): string;
 var
-  lst : IObj<TStringList>;
-  tagBegin : Integer;
-  tagEnd : Integer;
+  lst : TStringList; ilst : IObj;
+  tagBegin, tagEnd : Integer;
   i : Integer;
 begin
-  lst := TObj.CreateInstance(TStringList.Create);
+  lst := TStringList.Create; ilst := TObj.Create(lst);
 
   tagBegin := src.IndexOf(format('//%s-begin', [tag]));
   tagEnd := src.IndexOf(format('//%s-end', [tag]));
@@ -282,42 +280,40 @@ begin
   if (tagBegin > 0) and (tagEnd > tagBegin) then
   begin
     for i := tagBegin + 1 to tagEnd - 1 do
-      lst.Obj.add(src[i]);
+      lst.add(src[i]);
   end;
 
-  result := lst.Obj.Text;
+  result := lst.Text;
 end;
 
 function TfrmIObjTestMain.getFile(const resourceName: string): string;
 var
-  ss : IObj<TStringStream>;
-  rs : IObj<TResourceStream>;
+  ss : TStringStream; iss : IObj;
+  rs : TResourceStream; irs : IObj;
 begin
-  ss := TObj.CreateInstance(TStringStream.Create);
-  rs := TObj.CreateInstance(TResourceStream.Create(hInstance, resourceName, RT_RCDATA));
-  ss.Obj.LoadFromStream(rs.Obj);
-  result := ss.Obj.DataString;
+  ss := TStringStream.Create; iss := TObj.Create(ss);
+  rs := TResourceStream.Create(hInstance, resourceName, RT_RCDATA); irs := TObj.Create(rs);
+  ss.LoadFromStream(rs);
+  result := ss.DataString;
 end;
 
 
 procedure TfrmIObjTestMain.loadIObj;
 begin
   memoIObj.Lines.Text := getFile('IObj');
-  if cbLineNumbers.Checked then
-    ShowLineNumbers([memoIObj.Lines]);
 end;
 
 procedure TfrmIObjTestMain.loadLocalVars;
 var
-  lst : IObj<TStringList>;
+  lst : TStringList; ilst : IObj;
 begin
-  lst := TObj.CreateInstance(TStringList.Create);
-  lst.Obj.Text := getFile('LocalVars');
+  lst := TStringList.Create; ilst := TObj.Create(lst);
+  lst.Text := getFile('LocalVars');
 
   showCode(
-      getCode(lst.Obj, 'LocalVarsLeaked'),
-      getCode(lst.Obj, 'LocalVarsStandard'),
-      getCode(lst.Obj, 'LocalVarsIObj')
+      getCode(lst, 'LocalVarsLeaked'),
+      getCode(lst, 'LocalVarsStandard'),
+      getCode(lst, 'LocalVarsIObj')
   );
 
   btnLeaked.OnClick := btnLocalVarsLeakedClick;
@@ -327,15 +323,15 @@ end;
 
 procedure TfrmIObjTestMain.loadLoopVars;
 var
-  lst : IObj<TStringList>;
+  lst : TStringList; ilst : IObj;
 begin
-  lst := TObj.CreateInstance(TStringList.Create);
-  lst.Obj.Text := getFile('LocalVars');
+  lst := TStringList.Create; ilst := TObj.Create(lst);
+  lst.Text := getFile('LocalVars');
 
   showCode(
-      getCode(lst.Obj, 'LoopVarsLeaked'),
-      getCode(lst.Obj, 'LoopVarsStandard'),
-      getCode(lst.Obj, 'LoopVarsIObj')
+      getCode(lst, 'LoopVarsLeaked'),
+      getCode(lst, 'LoopVarsStandard'),
+      getCode(lst, 'LoopVarsIObj')
   );
 
   btnLeaked.OnClick := btnLoopVarsLeakedClick;

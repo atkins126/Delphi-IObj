@@ -2,7 +2,7 @@ unit ObjectAsPropertyIObj;
 
 interface
 uses
-  LN.IObj, System.Classes, Generics.Collections, System.SysUtils, Dialogs;
+  LN.IObj, System.Classes, System.SysUtils, Dialogs;
 
 type
   TPerson = class(TComponent)
@@ -14,9 +14,9 @@ type
     property DOB: TDate read fDOB write fDOB;
     constructor Create(Name : string; DOB : TDate); reintroduce;
   end;
-  IPerson = IObj<TPerson>;
+  IPerson = IObj;
   TPersonArray = array of IPerson;
-  IListPerson = IObj<TList<IPerson>>;
+  IListPerson = IObj;
 
   THouse= class(TComponent)
   private
@@ -50,44 +50,47 @@ end;
 
 class function THouse.execute: boolean;
 var
-  p1, p2, p3, p4, p5 : IObj<TPerson>;
-  house1, house2 : IObj<THouse>;
+  ip1, ip2, ip3, ip4, ip5 : IObj;
+  house1, house2 : THouse; iHouse1, iHouse2 : IObj;
 begin
-  p1 := TObj.CreateInstance(TPerson.Create('P1', StrToDate('1/1/2000')));
-  p2 := TObj.CreateInstance(TPerson.Create('P2', StrToDate('2/2/2000')));
-  p3 := TObj.CreateInstance(TPerson.Create('P3', StrToDate('3/3/2000')));
-  p4 := TObj.CreateInstance(TPerson.Create('P4', StrToDate('4/4/2000')));
-  p5 := TObj.CreateInstance(TPerson.Create('P5', StrToDate('5/5/2000')));
+  ip1 := TObj.Create(TPerson.Create('P1', StrToDate('1/1/2000')));
+  ip2 := TObj.Create(TPerson.Create('P2', StrToDate('2/2/2000')));
+  ip3 := TObj.Create(TPerson.Create('P3', StrToDate('3/3/2000')));
+  ip4 := TObj.Create(TPerson.Create('P4', StrToDate('4/4/2000')));
+  ip5 := TObj.Create(TPerson.Create('P5', StrToDate('5/5/2000')));
 
   // p1 owns 2 house1 & house2.
-  House1 := TObj.CreateInstance(THouse.Create('address1', [p1], [p2, p3], true));
-  House2 := TObj.CreateInstance(THouse.Create('address2', [p1], [p1, p4, p5], true));
+  house1 := THouse.Create('address1', [ip1], [ip2, ip3], true); iHouse1 := TObj.Create(house1);
+  house2 := THouse.Create('address2', [ip1], [ip1, ip4, ip5], true); iHouse2 := TObj.Create(house2);
 
   // do some logic
-  showMessage('Property: ' + house1.Obj.Address + #13#10 +
-              'Owner: ' + THouse.getNames(house1.Obj.Owners) + #13#10 +
-              'Residents: ' + THouse.getNames(house1.Obj.Residents));
+  showMessage('Property: ' + house1.Address + #13#10 +
+              'Owner: ' + THouse.getNames(house1.Owners) + #13#10 +
+              'Residents: ' + THouse.getNames(house1.Residents));
 
-  showMessage('Property: ' + house2.Obj.Address + #13#10 +
-              'Owner: ' + THouse.getNames(house2.Obj.Owners) + #13#10 +
-              'Residents: ' + THouse.getNames(house2.Obj.Residents));
+  showMessage('Property: ' + house2.Address + #13#10 +
+              'Owner: ' + THouse.getNames(house2.Owners) + #13#10 +
+              'Residents: ' + THouse.getNames(house2.Residents));
   Result := True;
 end;
 
 // returns a list of distinct people from the lists of owners and renters
 function THouse.getAllPeople: IListPerson;
 var
+  lst : TList;
   person : IPerson;
 begin
-  result := TObj.CreateInstance(TList<IPerson>.Create);
+  lst := TList.Create;
 
   for person in fOwners do
-    if (result.Obj.IndexOf(person) < 0) then
-      result.Obj.Add(person);
+    if (lst.IndexOf(person.Obj) < 0) then
+      lst.Add(person);
 
   for person in fResidents do
-    if (result.Obj.IndexOf(person) < 0) then
-      result.Obj.Add(person);
+    if (lst.IndexOf(person) < 0) then
+      lst.Add(person);
+
+  result := TObj.Create(lst);
 end;
 
 class function THouse.getNames(lst: TPersonArray): string;
@@ -98,9 +101,9 @@ begin
   for person in lst do
   begin
     if result = '' then
-      result := person.Obj.Name
+      result := TPerson(person.Obj).Name
     else
-      result := result + ', ' + person.Obj.Name;
+      result := result + ', ' + TPerson(person.Obj).Name;
   end;
 end;
 

@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{2BEA7F94-FB81-4A17-960D-77BF0772A0F7}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="TestOld\IObjTestOld.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Test\IObjTest.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="IObjTestOld">
+        <MSBuild Projects="TestOld\IObjTestOld.dproj"/>
+    </Target>
+    <Target Name="IObjTestOld:Clean">
+        <MSBuild Projects="TestOld\IObjTestOld.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IObjTestOld:Make">
+        <MSBuild Projects="TestOld\IObjTestOld.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="IObjTest">
+        <MSBuild Projects="Test\IObjTest.dproj"/>
+    </Target>
+    <Target Name="IObjTest:Clean">
+        <MSBuild Projects="Test\IObjTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="IObjTest:Make">
+        <MSBuild Projects="Test\IObjTest.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="IObjTestOld;IObjTest"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="IObjTestOld:Clean;IObjTest:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="IObjTestOld:Make;IObjTest:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
